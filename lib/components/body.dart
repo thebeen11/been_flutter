@@ -2,9 +2,14 @@ import 'package:been/components/custom_suffix_icon.dart';
 import 'package:been/components/default_button.dart';
 import 'package:been/components/form_error.dart';
 import 'package:been/constans.dart';
+import 'package:been/screen/forgot_password/forgot_password_screen.dart';
+import 'package:been/screen/sign_in/componets/sign_form.dart';
 import 'package:been/size_config.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
+import 'no_account.dart';
+import 'social_card.dart';
 
 class Body extends StatelessWidget {
   @override
@@ -16,91 +21,47 @@ class Body extends StatelessWidget {
           padding: EdgeInsets.symmetric(
             horizontal: getProportionateScreenWidht(20),
           ),
-          child: Column(
-            children: [
-              Text(
-                "Welcome Back",
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: getProportionateScreenWidht(28),
-                    fontWeight: FontWeight.bold),
-              ),
-              Text(
-                "Sign in with your email and password \nor continue with social media",
-                textAlign: TextAlign.center,
-              ),
-              SignForm(),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              children: [
+                Text(
+                  "Welcome Back",
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: getProportionateScreenWidht(28),
+                      fontWeight: FontWeight.bold),
+                ),
+                Text(
+                  "Sign in with your email and password \nor continue with social media",
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: SizeConfig.screenHeight * 0.04),
+                SignForm(),
+                SizedBox(height: SizeConfig.screenHeight * 0.08),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SocialCard(
+                      icon: "assets/icons/google-icon.svg",
+                      press: () {},
+                    ),
+                    SocialCard(
+                      icon: "assets/icons/facebook-2.svg",
+                      press: () {},
+                    ),
+                    SocialCard(
+                      icon: "assets/icons/twitter.svg",
+                      press: () {},
+                    ),
+                  ],
+                ),
+                SizedBox(
+                  height: getProportionateScreenHeight(20),
+                ),
+                NoAccountText()
+              ],
+            ),
           ),
-        ),
-      ),
-    );
-  }
-}
-
-class SignForm extends StatefulWidget {
-  @override
-  _SignFormState createState() => _SignFormState();
-}
-
-class _SignFormState extends State<SignForm> {
-  final _formKey = GlobalKey<FormState>();
-  final List<String> errors = ["Demo Error"];
-  @override
-  Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          buildEmailFormField(),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          buildPasswordFormField(),
-          SizedBox(height: getProportionateScreenHeight(20)),
-          FormErrors(errors: errors),
-          DefaultButton(
-            text: "Continue",
-            press: () {
-              if (_formKey.currentState.validate()) {
-                _formKey.currentState.save();
-              }
-            },
-          )
-        ],
-      ),
-    );
-  }
-
-  TextFormField buildPasswordFormField() {
-    return TextFormField(
-      obscureText: true,
-      decoration: InputDecoration(
-        labelText: "Password",
-        hintText: "Input your password",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(
-          svgIcon: "assets/icons/Lock.svg",
-        ),
-      ),
-    );
-  }
-
-  TextFormField buildEmailFormField() {
-    return TextFormField(
-      keyboardType: TextInputType.emailAddress,
-      validator: (value) {
-        if (value.isEmpty) {
-          setState(() {
-            errors.add(kEmailNullError);
-          });
-        }
-        return null;
-      },
-      decoration: InputDecoration(
-        labelText: "Email",
-        hintText: "Input your email",
-        floatingLabelBehavior: FloatingLabelBehavior.always,
-        suffixIcon: CustomSuffixIcon(
-          svgIcon: "assets/icons/Mail.svg",
         ),
       ),
     );
